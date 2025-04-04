@@ -43,7 +43,7 @@ export default class GameOver extends Phaser.Scene {
       )
       .setOrigin(0.5);
 
-    tryPOST('/api/score', { score });
+    tryPOST('http://158.180.65.55:3006/api/score', { score });
 
     this.input.keyboard.on("keydown-SPACE", this.startGame, this);
     this.input.on("pointerdown", (pointer) => this.startGame(), this);
