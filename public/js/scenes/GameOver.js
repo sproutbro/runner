@@ -1,3 +1,5 @@
+import { tryPOST } from "../fetch/fetch.js";
+
 export default class GameOver extends Phaser.Scene {
   constructor() {
     super({ key: "gameover" });
@@ -11,12 +13,14 @@ export default class GameOver extends Phaser.Scene {
 
     this.cameras.main.setBackgroundColor(0x87ceeb);
 
+    const score = this.registry.get("score")
+
     this.add
       .bitmapText(
         this.center_width,
         50,
         "arcade",
-        this.registry.get("score"),
+        score,
         25
       )
       .setOrigin(0.5);
@@ -38,6 +42,9 @@ export default class GameOver extends Phaser.Scene {
         15
       )
       .setOrigin(0.5);
+
+    tryPOST('/api/score', { score });
+
     this.input.keyboard.on("keydown-SPACE", this.startGame, this);
     this.input.on("pointerdown", (pointer) => this.startGame(), this);
   }
