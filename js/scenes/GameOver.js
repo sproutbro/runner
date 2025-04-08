@@ -12,8 +12,8 @@ export default class GameOver extends Phaser.Scene {
     this.cameras.main.setBackgroundColor(0x87ceeb);
 
     const score = this.registry.get("score");
-    const response = await this.postScore(score);
-    console.log(response);
+    const data = await this.postScore(score);
+    console.log(data);
 
     this.add
       .bitmapText(
@@ -49,7 +49,7 @@ export default class GameOver extends Phaser.Scene {
 
   async postScore(score) {
     try {
-      const response = await fetch("/runner", {
+      const response = await fetch("/api/scores", {
         method: 'POST',
         body: JSON.stringify({ score }),
         headers: {
