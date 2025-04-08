@@ -49,7 +49,7 @@ export default class GameOver extends Phaser.Scene {
 
   async postScore(score) {
     try {
-      const response = await fetch("/api/scores", {
+      const response = await fetch("/game/api/scores", {
         method: 'POST',
         body: JSON.stringify({ score }),
         headers: {
