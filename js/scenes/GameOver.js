@@ -1,3 +1,5 @@
+import { fetchScore } from "../utils/fetch.js";
+
 export default class GameOver extends Phaser.Scene {
   constructor() {
     super({ key: "gameover" });
@@ -12,15 +14,23 @@ export default class GameOver extends Phaser.Scene {
     this.cameras.main.setBackgroundColor(0x87ceeb);
 
     const score = this.registry.get("score");
-    const data = await this.postScore(score);
-    console.log(data);
+    const data = await fetchScore(score);
 
     this.add
       .bitmapText(
         this.center_width,
         50,
         "arcade",
-        score,
+        `${data.message} ${data.score}`,
+        25
+      )
+      .setOrigin(0.5);
+    this.add
+      .bitmapText(
+        this.center_width,
+        25,
+        "arcade",
+        `Score ${score}`,
         25
       )
       .setOrigin(0.5);
@@ -45,21 +55,6 @@ export default class GameOver extends Phaser.Scene {
 
     this.input.keyboard.on("keydown-SPACE", this.startGame, this);
     this.input.on("pointerdown", (pointer) => this.startGame(), this);
-  }
-
-  async postScore(score) {
-    try {
-      const response = await fetch("/game/api/scores", {
-        method: 'POST',
-        body: JSON.stringify({ score }),
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      });
-      return await response.json();
-    } catch (error) {
-      console.error(error);
-    }
   }
 
   showLine(text, y) {
